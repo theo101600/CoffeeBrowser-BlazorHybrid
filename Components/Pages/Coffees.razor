@@ -1,0 +1,45 @@
+@page "/coffees"
+@inject ICoffeeService CoffeeService
+
+<h1>Coffees</h1>
+
+@if (coffees is null)
+{
+    <div class="d-flex align-items-center gap-2 text-muted">
+        <div class="spinner-border spinner-border-sm" role="status"></div>
+        <span>Loading...</span>
+    </div>
+}
+else
+{
+    <div class="table-responsive">
+        <table class="table table-hover align-middle">
+            <thead class="table-dark">
+                <tr>
+                    <th>Name</th>
+                    <th>Description</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var coffee in coffees)
+                {
+                    <tr>
+                        <td class="fw-semibold">@coffee.Name</td>
+                        <td>@coffee.Description</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+
+@code {
+
+    private IEnumerable<Coffee>? coffees = null;
+
+    protected override async Task OnInitializedAsync()
+    {
+        coffees = await CoffeeService.LoadCoffeeAsync();
+    }
+
+}
